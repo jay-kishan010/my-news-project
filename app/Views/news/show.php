@@ -19,23 +19,40 @@
             height: auto;
             border-radius: 5px;
         }
+        /* Sidebar styles */
+        .sidebar {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+        .content {
+            margin-left: 250px;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 class="text-center"><?= esc($newsItem->title); ?></h1>
-    
-    <p class="text-muted text-center">Published by <strong><?= esc($newsItem->author); ?></strong> | Category: <strong><?= esc($newsItem->category_name); ?></strong></p>
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-3 sidebar">
+        <?= view('layouts/sidebar'); ?>
+    </div>
 
-    <!-- Show Image -->
-    <?php if (!empty($newsItem->image)): ?>
-        <img src="<?= base_url('uploads/' . esc($newsItem->image)); ?>" alt="<?= esc($newsItem->title); ?>" class="news-img">
-    <?php endif; ?>
+    <!-- Content -->
+    <div class="container content mt-5">
+        <h1 class="text-center"><?= esc($newsItem->title); ?></h1>
+        
+        <p class="text-muted text-center">Published by <strong><?= esc($newsItem->author); ?></strong> | Category: <strong><?= esc($newsItem->category_name); ?></strong></p>
 
-    <p class="mt-3"><?= nl2br(esc($newsItem->content)); ?></p>
+        <!-- Show Image -->
+        <?php if (!empty($newsItem->image)): ?>
+            <img src="<?= base_url('uploads/' . esc($newsItem->image)); ?>" alt="<?= esc($newsItem->title); ?>" class="news-img">
+        <?php endif; ?>
 
-    <a href="<?= site_url('news'); ?>" class="btn btn-secondary mt-3">Back to News</a>
+        <p class="mt-3"><?= nl2br(esc($newsItem->content)); ?></p>
+
+        <a href="<?= site_url('news'); ?>" class="btn btn-secondary mt-3">Back to News</a>
+    </div>
 </div>
 
 </body>

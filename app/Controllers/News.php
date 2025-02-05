@@ -71,5 +71,53 @@ class News extends BaseController
 
         return redirect()->to('/news');
     }
+
+
+
+public function edit($id)
+{
+    $newsModel = new NewsModel();
+    $categoryModel = new CategoryModel();
+
+    $data['newsItem'] = $newsModel->find($id);
+    $data['categories'] = $categoryModel->findAll();
+
+    if (!$data['newsItem']) {
+        return redirect()->to('/news')->with('error', 'News not found');
+    }
+
+    return view('news/edit', $data);
 }
 
+public function update($id)
+{
+    $newsModel = new NewsModel();
+    $file = $this->request->getFile('image');
+
+    // Handle Image Upload
+    if ($file && $file->isValid()) {
+        $imageName = $file->getRandomName();
+        $file->move('uploads/', $imageName);
+    } else {
+        $imageName = $this->request->getPost('old_image'); // Keep old image
+    }
+
+    $newsModel->update($id, [
+        'title'       => $this->request->getPost('title'),
+        'content'     => $this->request->getPost('content'),
+        'image'       => $imageName,
+        'category_id' => $this->request->getPost('category'),
+    ]);
+
+    return redirect()->to('/news')->with('success', 'News updated successfully');
+}
+
+public function delete($id)
+{
+    $newsModel = new NewsModel();
+    $newsModel->delete($id);
+
+    return redirect()->to('/news')->with('success', 'News deleted successfully');
+}
+
+}

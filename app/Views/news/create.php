@@ -4,72 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create News</title>
+    
+    <!-- Bootstrap & FontAwesome -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
-        .container {
-            max-width: 600px;
-            margin-top: 50px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        .container-wrapper {
+            display: flex;
         }
-        .preview-img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            display: none;
-            border-radius: 5px;
+        .sidebar {
+            width: 250px;
+            min-height: 100vh;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2 class="text-center mb-4">Create News Article</h2>
+<div class="container-wrapper">
+    <!-- Sidebar -->
+    <?= view('layouts/sidebar'); ?>
 
-    <form action="<?= site_url('news/store'); ?>" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-            <label><strong>Title</strong></label>
-            <input type="text" name="title" class="form-control" placeholder="Enter news title" required>
-        </div>
+    <!-- Main Content -->
+    <div class="content">
+        <h2 class="text-center mb-4">Create News</h2>
 
-        <div class="form-group">
-            <label><strong>Content</strong></label>
-            <textarea name="content" class="form-control" rows="5" placeholder="Write your news content here..." required></textarea>
-        </div>
+        <form action="<?= site_url('news/store'); ?>" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" name="title" class="form-control" required>
+            </div>
 
-        <div class="form-group">
-            <label><strong>Image</strong></label>
-            <input type="file" name="image" class="form-control-file" id="imageUpload">
-            <img id="preview" class="preview-img" />
-        </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category_id" class="form-control">
+                    <option value="1">Politics</option>
+                    <option value="2">Technology</option>
+                    <option value="3">Sports</option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label><strong>Category</strong></label>
-            <select name="category" class="form-control" required>
-                <option value="">Select Category</option>
-                <?php foreach ($categories as $category): ?>
-                    <option value="<?= esc($category['id']); ?>"><?= esc($category['name']); ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>Content</label>
+                <textarea name="content" class="form-control" rows="5" required></textarea>
+            </div>
 
-        <button type="submit" class="btn btn-primary btn-block">Publish News</button>
-    </form>
+            <div class="form-group">
+                <label>Upload Image</label>
+                <input type="file" name="image" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
+    </div>
 </div>
 
-<script>
-    document.getElementById('imageUpload').addEventListener('change', function(event) {
-        const reader = new FileReader();
-        reader.onload = function() {
-            const preview = document.getElementById('preview');
-            preview.src = reader.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    });
-</script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
